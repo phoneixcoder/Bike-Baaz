@@ -35,6 +35,6 @@ To run the project locally, use the following command:
    ```bash
    1. Change into the project directory:
    ```
-   npm start
+   npm star
    ```
    This will start the project on http://localhost:5173.
