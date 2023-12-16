@@ -17,7 +17,7 @@
     padding: 15px 20px;
     letter-spacing: 1.2px;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .table-body {
@@ -25,6 +25,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    
 }
 
 .table-row {
@@ -35,6 +36,7 @@
     align-items: center;
     padding: 20px 20px;
     color: white;
+    
 }
 
 .table-element{
@@ -42,6 +44,7 @@
     text-align: center;
     padding: 0 40px;
     color: white;
+    font-size: 14px;
 }
 
 

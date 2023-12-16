@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBatteryData } from "../../Redux/Actions/batteryDataAction";
 import { setSearchFilterById } from "../../Redux/Slice/BatterDataSlice";
-import Table from "../../Components/Table/Table";
 import "./Home.css";
 import search from "../../assets/search.png";
 import LoadingScreen from "../../Components/Loading/Loading";
+
+// Lazy load the Table component
+const Table = lazy(() => import("../../Components/Table/Table"));
+
 const Home = () => {
   const { completeData, isFilter, filterData, loading, error } = useSelector(
     (state) => state.batteryStore
@@ -21,7 +24,13 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchBatteryData());
+    if (error === "Network Error") {
+      alert("You're not connected to internet. Please try again");
+    }
   }, []);
+
+  const cachedData = useMemo(() => completeData, [completeData]);
+  const cachedFilters = useMemo(() => filterData, [filterData]);
 
   return (
     <>
@@ -43,13 +52,19 @@ const Home = () => {
               <img src={search} alt="search" className="search-icon" />
             </div>
           </div>
-          {completeData ? (
-            <Table
-              columns={columns}
-              data={isFilter !== true ? completeData : filterData}
-            />
+          {cachedData ? (
+            <Suspense fallback={<div>Loading...</div>}>
+              <Table
+                columns={columns}
+                data={isFilter !== true ? cachedData : cachedFilters}
+              />
+            </Suspense>
           ) : (
-            <div>No data available</div>
+            <div
+              style={{ color: "white", marginTop: "24px", fontSize: "16px" }}
+            >
+              {error ? error : "No data available"}
+            </div>
           )}
         </div>
       )}
